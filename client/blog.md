@@ -151,6 +151,9 @@ spec:
 
 ### Stable diffunsionの実行
 試しに、5.5GiBのGPUメモリをStable diffunsionに割り当てていますが、以下のエラーが出ています。
+実行するPromptはこちらです。
+Prompt:masterpiece, best quality, high quality,ultra detailed,office building,
+NegativePrompt:EasyNegative,
 ```
 RuntimeError: CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasCreate(handle)`
 Time taken: 0.02sTorch active/reserved: 4087/4196 MiB, Sys VRAM: 5161/5166 MiB (99.9%)
@@ -161,7 +164,8 @@ Time taken: 0.02sTorch active/reserved: 4087/4196 MiB, Sys VRAM: 5161/5166 MiB (
             aliyun.com/gpu-core.percentage: 40
             aliyun.com/gpu-mem: 8
 ```
-![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/ad072eb7-2a70-46df-aa55-a74b7e334846)
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/c267b2e1-e514-4991-a21b-86f445bcd2d8)
+
 
 
 ### 最後に
