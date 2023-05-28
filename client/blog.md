@@ -158,5 +158,7 @@ Time taken: 0.02sTorch active/reserved: 4087/4196 MiB, Sys VRAM: 5161/5166 MiB (
             aliyun.com/gpu-core.percentage: 40
             aliyun.com/gpu-mem: 8
 ```
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/ad072eb7-2a70-46df-aa55-a74b7e334846)
+
 
 ### 最後に
