@@ -61,6 +61,11 @@ helm ReleaseをACKのクラスターにデプロイしたら、libglib2.0-0と�
 githubを見たら最新のcommitは半年前のため、頻繁にメンテナンスしていないようです。
 
 方向性を変えて、自分でstable-diffusion-webuiをコンテナ化してデプロイするようにしました。
+ubuntuのVMを使って、VM上にnvidiaのGPUドライブをインストールします。
+VM上とコンテナ内両方でnvidiaのGPUを確認するコマンドが通ることを確認します。
+VM上で確認　nvidia-smi
+コンテナ内で確認　docker run --rm --gpus device=0 nvidia/cuda:11.3.0-base-ubuntu20.04 nvidia-smi
+--gpus device=0 こちらのパラメータでもしうまく通らない場合、デバイス番号が合わないためです。デバイス番号を意識せず簡易的に--gpus all で指定するのもできます。
 
 デプロイする前にkubectl inspect cgpuコマンドで確認すると、GPUがまだ配分されていないことを確認できます。
 ![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/0fe7820a-942f-4d80-9b34-4df24b6e4762)
@@ -88,6 +93,9 @@ VOLUME /root/.cache
 CMD ["python3", "launch.py", "--listen"]
 
 ```
+GPUインスタンス上にコンテナが実行できることを確認します。
+docker run -it -p 80:7860 --gpus device=0 stable-diffusion:v1 /bin/bash
+
 ```
 apiVersion: apps/v1
 kind: Deployment
