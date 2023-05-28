@@ -95,6 +95,8 @@ CMD ["python3", "launch.py", "--listen"]
 ```
 GPUインスタンス上にコンテナが実行できることを確認します。
 docker run -it -p 80:7860 --gpus device=0 stable-diffusion:v1 /bin/bash
+問題なく実行できたら、イメージをコンテナレジストリにプッシュします。
+その後、以下のYAMLファイルでデプロイします。
 
 ```
 apiVersion: apps/v1
@@ -122,7 +124,7 @@ spec:
         command:
         - python3
         - launch.py
-        image: rais39/stable-diffusion:v2
+        image: {{そちらのコンテナレジストリ}}/stable-diffusion:v1
         imagePullPolicy: IfNotPresent
         name: stable-diffusion
         resources:
@@ -151,6 +153,13 @@ spec:
     app: stable-diffusion
   type: LoadBalancer
 ```
+注文するところはこちらのようにGPUのコンピューティングリソースとメモリを割り当てています。
+```
+          limits:
+            aliyun.com/gpu-core.percentage: 25
+            aliyun.com/gpu-mem: 5.5
+```
+
 コンテナを起動したあとに、Stable diffunsionのモデル約数GBをダウンロードする必要があります。
 ダウンロードが終わったらロードバランサー経由でアクセスできるようになります。
 実行している状態で、以下コマンドでGPU配分状況を確認します。
