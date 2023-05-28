@@ -147,5 +147,16 @@ spec:
 ダウンロードが終わったらロードバランサー経由でアクセスできるようになります。
 
 ### Stable diffunsionの実行
+試しに、5.5GiBのGPUメモリをStable diffunsionに割り当てていますが、以下のエラーが出ています。
+```
+RuntimeError: CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling `cublasCreate(handle)`
+Time taken: 0.02sTorch active/reserved: 4087/4196 MiB, Sys VRAM: 5161/5166 MiB (99.9%)
+```
+またYAMLファイルを編集して、より多めにGPUメモリを割り当ててあげます。
+```
+          limits:
+            aliyun.com/gpu-core.percentage: 40
+            aliyun.com/gpu-mem: 8
+```
 
 ### 最後に
