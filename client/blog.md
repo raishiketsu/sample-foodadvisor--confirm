@@ -145,6 +145,9 @@ spec:
 ```
 コンテナを起動したあとに、Stable diffunsionのモデル約数GBをダウンロードする必要があります。
 ダウンロードが終わったらロードバランサー経由でアクセスできるようになります。
+実行している状態で、以下コマンドでGPU配分状況を確認します。
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/6a434818-2520-4ccd-a30c-b5688316c97c)
+
 
 ### Stable diffunsionの実行
 試しに、5.5GiBのGPUメモリをStable diffunsionに割り当てていますが、以下のエラーが出ています。
