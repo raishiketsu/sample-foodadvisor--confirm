@@ -5,13 +5,42 @@ AlibabaCloudにはGPUで機械学習のタスクを実行するときに、効�
 ### cGPUのご紹介
 
 セットアップの手順
+###### ACKクラスター作成
+ACK Proエディションのクラスターを作成します。
+少なくとも１つのGPUタイプのVMをk8sのNodeとしてクラスターに追加します。
+
 ###### ack-ai-installerコンポーネントのインストール
 ACKはベーシックエディションとProエディションの二種類があります。
 ベーシックエディションはhelmでack-ai-installerコンポーネントをインストールする必要があります。
 Proエディションは管理コンソールのGUIでインストールできます。
-Proエディションは複数枚のGPUのスケジューリング及び隔離ができるため、基本的にはProエディションをおすすめです。
+ベーシックエディションは1枚のGPUの管理のみサポートしているに対して、Proエディションは複数枚のGPUのスケジューリング及び隔離ができます。
+またベーシックエディションはSLAがないに対して、Proエディションは99.95%のSLAを提供しています。
+基本的にはProエディションをおすすめです。
 今回はProエディションを例に説明します。
-AlibabaCloud ACK管理コンソールを開き、クラスター一覧からACKのクラスターを選んで
+AlibabaCloud ACK管理コンソールを開き、クラスター一覧からACKのクラスターを選んで、
+クラスターの詳細が画面に入ります。
+左側のメニューバーから、「アプリケーション」の下に「Cloud-native AI Suite」をクリックします。
+cGPUの利用はCloud-native AI Suiteの全ての機能をインストールする必要がなく、ack-ai-installerコンポーネントのみインストールすれば大丈夫です。
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/75479c31-9d85-47d0-9285-e655e4ab4114)
+
+###### Nodeにラベル追加
+GPUタイプVMにack.node.gpu.scheduleのラベルを追加すれば、cGPUを使えるようになります。
+ラベルを追加する方法は２つあります。
+方法１、ACKのノードプールにラベル追加する、この場合ノードプール内の全てのNodeにラベルが追加されます。ノードプール内に複数台のVMが全部GPUタイプならこちらの方法を使います。
+方法２、ACKのNodeに直接ラベルを追加する、この場合該当VMにのみラベルが反映されます。同じクラスター内に普通のVMのNode、GPUタイプVMのNode、バーチャルNodeが複数の種類が存在し、あるいは一台のGPUタイプVMのNodeにのみラベルを付ける場合はこちらの方法を使います。
+今回は方法２を使います。
+
+###### kubectl-inspect-cgpuツールのインストール
+CloudShellもしくはローカル環境で、kubeconfigを設定し、kubectlを実行できる環境で、以下のコマンドを実行し、kubectl-inspect-cgpuをインストールします。
+```
+Linux
+sudo wget http://aliacs-k8s-cn-beijing.oss-cn-beijing.aliyuncs.com/gpushare/kubectl-inspect-cgpu-linux -O /usr/local/bin/kubectl-inspect-cgpu
+Mac
+sudo wget http://aliacs-k8s-cn-beijing.oss-cn-beijing.aliyuncs.com/gpushare/kubectl-inspect-cgpu-darwin -O /usr/local/bin/kubectl-inspect-cgpu
+sudo chmod +x /usr/local/bin/kubectl-inspect-cgpu
+kubectl inspect cgpu
+```
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/0fe7820a-942f-4d80-9b34-4df24b6e4762)
 
 ### Stable diffunsionをcGPU環境にインストール
 Stable dffusionはオープンソースのため、GPUなどのコンピューティングリソースがあれば実行できます。一方でオープンソースのため、誰かが環境を用意してくれることがなく、自分でセットアップする必要があります。
