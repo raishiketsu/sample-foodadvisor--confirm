@@ -100,6 +100,8 @@ spec:
     app: stable-diffusion
   type: LoadBalancer
 ```
+コンテナを起動したあとに、Stable diffunsionのモデル約数GBをダウンロードする必要があります。
+ダウンロードが終わったらロードバランサー経由でアクセスできるようになります。
 
 ### Stable diffunsionの実行
 
