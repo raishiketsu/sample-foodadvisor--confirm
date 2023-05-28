@@ -23,6 +23,11 @@ helm ReleaseをACKのクラスターにデプロイしたら、libglib2.0-0と�
 githubを見たら最新のcommitは半年前のため、頻繁にメンテナンスしていないようです。
 
 方向性を変えて、自分でstable-diffusion-webuiをコンテナ化してデプロイするようにしました。
+
+デプロイする前にkubectl inspect cgpuコマンドで確認すると、GPUがまだ配分されていないことを確認できます。
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/0fe7820a-942f-4d80-9b34-4df24b6e4762)
+
+
 Dockerfileはこちらです。
 ```
 FROM nvidia/cuda:11.3.0-cudnn8-runtime-ubuntu20.04
