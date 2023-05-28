@@ -45,7 +45,61 @@ VOLUME /root/.cache
 CMD ["python3", "launch.py", "--listen"]
 
 ```
-
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: stable-diffusion
+  name: stable-diffusion
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stable-diffusion
+  template:
+    metadata:
+      labels:
+        app: stable-diffusion
+    spec:
+      containers:
+      - args:
+        - --listen
+        - --skip-torch-cuda-test
+        - --no-half
+        command:
+        - python3
+        - launch.py
+        image: rais39/stable-diffusion:v2
+        imagePullPolicy: IfNotPresent
+        name: stable-diffusion
+        resources:
+          requests:
+            cpu: "2"
+            memory: 2Gi
+          limits:
+            aliyun.com/gpu-core.percentage: 25
+            aliyun.com/gpu-mem: 5.5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-address-type: internet
+    service.beta.kubernetes.io/alibaba-cloud-loadbalancer-instance-charge-type: PayByCLCU
+  name: stable-diffusion
+  namespace: default
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 7860
+  selector:
+    app: stable-diffusion
+  type: LoadBalancer
+```
 
 ### Stable diffunsionの実行
 
