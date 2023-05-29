@@ -3,6 +3,13 @@ AlibabaCloudにはGPUで機械学習のタスクを実行するときに、効�
 今回はいま話題の生成系AIのStable dffusionをcGPU環境に実行するのを実施して見ようと思います。
 
 ### cGPUのご紹介
+クラウドを使う場合、CPUは仮想化できて、必要な分だけ配分すれば大丈夫です。
+いっぱいでGPUは仮想化できず、VMから丸ごと1枚のGPUを使うしかないです。
+そうすると機械学習の学習あるいは推論のプロセスで、1枚の低スペックなGPUだとスペックが足りない、一個上の高スペックなGPUならまたリソースが余ります。
+こちらのイラストに描いてある通り、１つのタスク実行で1枚のGPUリソースを使い切れない場合、無駄が発生してしまいます。
+この問題を解決するために、AlibabaCloudのGPUという仕組みがあります。
+![image](https://github.com/raishiketsu/sample-foodadvisor--confirm/assets/37066555/31ca110b-5cb4-42a8-8901-8b093d406dc6)
+※AlibabaCloudの資料を引用
 
 セットアップの手順
 ###### ACKクラスター作成
@@ -153,7 +160,7 @@ spec:
     app: stable-diffusion
   type: LoadBalancer
 ```
-注文するところはこちらのようにGPUのコンピューティングリソースとメモリを割り当てています。
+注目するところはこちらのようにGPUのコンピューティングリソースとメモリを割り当てています。
 ```
           limits:
             aliyun.com/gpu-core.percentage: 25
